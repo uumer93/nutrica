@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrica - طلب المنتج</title>
+    
+    <!-- Google Fonts: Cairo -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f7;
+            color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .page-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 20px rgba(0,0,0,0.1);
+            position: relative;
+            padding-bottom: 80px;
+        }
+
+        .landing-images {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .landing-images img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        /* Order Form Section */
+        .order-form-section {
+            padding: 25px 20px;
+            background-color: #ffffff;
+            text-align: center;
+            border-top: 1px solid #e0e0e0; /* Normal neutral border instead of green line */
+        }
+
+        /* FOMO Urgency Box */
+        .fomo-box {
+            background-color: #fff3e0;
+            border: 1px dashed #e65100;
+            border-radius: 8px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            color: #d84315;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .fomo-stock {
+            color: #c62828;
+            font-size: 15px;
+            font-weight: 800;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .fomo-timer {
+            font-size: 16px;
+            font-weight: 800;
+            direction: ltr;
+            display: inline-block;
+            background: #e65100;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+        }
+
+        .form-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #111;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+            text-align: right;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            font-size: 15px;
+            font-weight: 600;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: #e65100;
+        }
+
+        /* Error Message Style */
+        .error-msg {
+            color: #d32f2f;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 5px;
+            display: none;
+            text-align: right;
+        }
+
+        /* Honeypot Hidden Input */
+        .website-confirm-field {
+            display: none !important;
+        }
+
+        /* Submit Button matching sticky orange color */
+        .btn-submit {
+            width: 100%;
+            background-color: #e65100;
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 800;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(230, 81, 0, 0.3);
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            margin-top: 5px;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* Sticky Button Style & Hide transition */
+        .sticky-button-container {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 480px;
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 12px 16px;
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            z-index: 99;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sticky-button-container.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .btn-sticky {
+            display: block;
+            width: 100%;
+            background-color: #e65100;
+            color: #ffffff;
+            text-align: center;
+            text-decoration: none;
+            padding: 14px;
+            font-size: 17px;
+            font-weight: 800;
+            border-radius: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        /* Thank You Modal Screen */
+        .thank-you-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .thank-you-card {
+            background-color: #ffffff;
+            max-width: 400px;
+            width: 100%;
+            padding: 30px 20px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .thank-you-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .thank-you-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #e65100;
+            margin-bottom: 12px;
+        }
+
+        .thank-you-text {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .btn-close-modal {
+            background-color: #111;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-container">
+
+        <!-- 1. Landing Images Stack -->
+        <div class="landing-images">
+            <a href="#order-form"><img src="1.jpg" alt="Nutrica - Image 1"></a>
+            <a href="#order-form"><img src="2.jpg" alt="Nutrica - Image 2"></a>
+            <a href="#order-form"><img src="3.jpg" alt="Nutrica - Image 3"></a>
+            <a href="#order-form"><img src="4.jpg" alt="Nutrica - Image 4"></a>
+        </div>
+
+        <!-- 2. COD Order Form Section -->
+        <div class="order-form-section" id="order-form">
+
+            <!-- FOMO / Scarcity Notice -->
+            <div class="fomo-box">
+                <span class="fomo-stock">⚡ بقات غير 8 قطع فقط فالمخزون!</span>
+                عرض الخصم (30%-) غادي يسالي بعد:
+                <div><span class="fomo-timer" id="timer">01:59:59</span></div>
+            </div>
+
+            <!-- <h2 class="form-title">أطلب الآن - الدفع عند الاستلام</h2> -->
+
+            <form id="codForm" onsubmit="handleOrderSubmit(event)">
+                
+                <!-- Honeypot anti-bot field (Hidden) -->
+                <div class="website-confirm-field">
+                    <input type="text" id="address_confirm" name="address_confirm" tabindex="-1" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" id="fullname" name="fullname" placeholder="أكتب اسمك الكامل هنا" required>
+                    <div id="nameError" class="error-msg">المرجو كتابة اسم صحيح وخالي من الرموز العشوائية.</div>
+                </div>
+
+                <div class="form-group">
+                    <input type="tel" id="phone" name="phone" placeholder="أكتب رقم هاتفك هنا" required>
+                    <div id="phoneError" class="error-msg">المرجو إدخال رقم هاتف مغربي صحيح متكون من 10 أرقام (0612345678).</div>
+                </div>
+
+                <button type="submit" class="btn-submit">أطلب الآن بـ 229 درهم فقط</button>
+            </form>
+        </div>
+
+        <!-- 3. Sticky Button (Auto-hides when form is visible) -->
+        <div class="sticky-button-container" id="stickyBtnContainer">
+            <a href="#order-form" class="btn-sticky">اضغط هنا للطلب الان 🛒</a>
+        </div>
+
+    </div>
+
+    <!-- 4. Thank You Page Modal -->
+    <div class="thank-you-modal" id="thankYouModal">
+        <div class="thank-you-card">
+            <div class="thank-you-icon">🎉</div>
+            <h3 class="thank-you-title">شكراً جزيلاً!</h3>
+            <p class="thank-you-text">
+                الطلب ديالك داز بنجاح.<br>
+                الفريق ديالنا غادي يتصل بك فـ أقرب وقت لتأكيد الطلب.
+            </p>
+            <button class="btn-close-modal" onclick="closeModal()">حسناً</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Handling -->
+    <script>
+        // Blacklist keywords for fake names
+        const blacklistedKeywords = [
+            'test', 'tst', 'asdf', 'qwer', 'zxcv', '123', '1234', 
+            'hjdadzkh', 'null', 'undefined', 'fake', 'abcd', 'aaa', 'bbb'
+        ];
+
+        // 1. Hide Sticky Button when scrolling to Order Form
+        const orderForm = document.getElementById('order-form');
+        const stickyBtnContainer = document.getElementById('stickyBtnContainer');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    stickyBtnContainer.classList.add('hidden');
+                } else {
+                    stickyBtnContainer.classList.remove('hidden');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        observer.observe(orderForm);
+
+        // 2. Countdown Timer (2 Hours)
+        let totalSeconds = 2 * 3600 - 1;
+        const timerElement = document.getElementById('timer');
+
+        setInterval(() => {
+            if (totalSeconds <= 0) {
+                totalSeconds = 2 * 3600; // Reset loop if reached 0
+            }
+            totalSeconds--;
+            const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
+            const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+            const seconds = String(totalSeconds % 60).padStart(2, '0');
+            timerElement.textContent = `${hours}:${minutes}:${seconds}`;
+        }, 1000);
+
+        // 3. Form Validation & Submission
+        function handleOrderSubmit(event) {
+            event.preventDefault();
+
+            const fullname = document.getElementById('fullname').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const honeypot = document.getElementById('address_confirm').value;
+
+            const nameError = document.getElementById('nameError');
+            const phoneError = document.getElementById('phoneError');
+
+            nameError.style.display = 'none';
+            phoneError.style.display = 'none';
+
+            // Check Honeypot (Anti-Bot)
+            if (honeypot !== "") {
+                console.warn("Bot submission blocked.");
+                return false;
+            }
+
+            // Validate Full Name
+            const cleanName = fullname.toLowerCase();
+            const isBlacklisted = blacklistedKeywords.some(keyword => cleanName.includes(keyword));
+            
+            if (fullname.length < 3 || isBlacklisted || /(.)\1{4,}/.test(fullname)) {
+                nameError.style.display = 'block';
+                return false;
+            }
+
+            // Validate Moroccan Phone Number (05, 06, or 07 + 8 digits)
+            const moroccoPhoneRegex = /^(05|06|07)[0-9]{8}$/;
+            const cleanPhone = phone.replace(/\s+/g, '');
+
+            if (!moroccoPhoneRegex.test(cleanPhone)) {
+                phoneError.style.display = 'block';
+                return false;
+            }
+
+            // Success Action
+            console.log("Order Data Verified:", { name: fullname, phone: cleanPhone });
+
+            document.getElementById('thankYouModal').style.display = 'flex';
+            document.getElementById('codForm').reset();
+        }
+
+        function closeModal() {
+            document.getElementById('thankYouModal').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
