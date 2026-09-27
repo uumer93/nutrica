@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nutrica - طلب المنتج</title>
-    
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2310B981'/><text x='50' y='68' font-size='60' font-weight='bold' font-family='Arial, sans-serif' fill='white' text-anchor='middle'>N</text></svg>">
     <!-- Google Fonts: Cairo -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -193,66 +193,76 @@
             100% { transform: scale(1); }
         }
 
-        /* Thank You Modal Screen */
-        .thank-you-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+/* Thank You Modal Screen */
+.thank-you-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
-        .thank-you-card {
-            background-color: #ffffff;
-            max-width: 400px;
-            width: 100%;
-            padding: 30px 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            animation: slideUp 0.3s ease-out;
-        }
+.thank-you-card {
+    background-color: #ffffff;
+    max-width: 400px;
+    width: 100%;
+    padding: 35px 20px 25px 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: slideUp 0.3s ease-out;
+    position: relative; /* Essential for relative positioning of X button */
+}
 
-        @keyframes slideUp {
-            from { transform: translateY(30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+/* Exit Button (X) top-right */
+.btn-close-x {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    font-weight: 800;
+    color: #888;
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
 
-        .thank-you-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-        }
+.btn-close-x:hover {
+    color: #111;
+}
 
-        .thank-you-title {
-            font-size: 22px;
-            font-weight: 800;
-            color: #e65100;
-            margin-bottom: 12px;
-        }
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
 
-        .thank-you-text {
-            font-size: 16px;
-            color: #333;
-            line-height: 1.6;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
+.thank-you-icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
 
-        .btn-close-modal {
-            background-color: #111;
-            color: #fff;
-            border: none;
-            padding: 12px 25px;
-            font-weight: 700;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+.thank-you-title {
+    font-size: 22px;
+    font-weight: 800;
+    color: #e65100;
+    margin-bottom: 12px;
+}
+
+.thank-you-text {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    font-weight: 700;
+}
     </style>
 </head>
 <body>
@@ -296,7 +306,7 @@
                     <div id="phoneError" class="error-msg">المرجو إدخال رقم هاتف مغربي صحيح متكون من 10 أرقام (0612345678).</div>
                 </div>
 
-                <button type="submit" class="btn-submit">أطلب الآن بـ 180 درهم فقط</button>
+                <button type="submit" class="btn-submit">أطلب الآن بـ 189 درهم فقط</button>
             </form>
         </div>
 
@@ -307,107 +317,23 @@
 
     </div>
 
-    <!-- 4. Thank You Page Modal -->
-    <div class="thank-you-modal" id="thankYouModal">
-        <div class="thank-you-card">
-            <div class="thank-you-icon">🎉</div>
-            <h3 class="thank-you-title">شكراً جزيلاً!</h3>
-            <p class="thank-you-text">
-                الطلب ديالك داز بنجاح.<br>
-                الفريق ديالنا غادي يتصل بك فـ أقرب وقت لتأكيد الطلب.
-            </p>
-            <button class="btn-close-modal" onclick="closeModal()">حسناً</button>
-        </div>
+<!-- Thank You Page Modal -->
+<div class="thank-you-modal" id="thankYouModal">
+    <div class="thank-you-card">
+        <!-- Exit Button at top right -->
+        <button class="btn-close-x" onclick="closeModal()">&times;</button>
+
+        <div class="thank-you-icon">🎉</div>
+        <h3 class="thank-you-title">شكراً جزيلاً!</h3>
+        <p class="thank-you-text">
+            الطلب ديالك داز بنجاح.<br>
+            الفريق ديالنا غادي يتصل بك فـ أقرب وقت لتأكيد الطلب.
+        </p>
     </div>
+</div>
 
     <!-- JavaScript Handling -->
-    <script>
-        // Blacklist keywords for fake names
-        const blacklistedKeywords = [
-            'test', 'tst', 'asdf', 'qwer', 'zxcv', '123', '1234', 
-            'hjdadzkh', 'null', 'undefined', 'fake', 'abcd', 'aaa', 'bbb'
-        ];
-
-        // 1. Hide Sticky Button when scrolling to Order Form
-        const orderForm = document.getElementById('order-form');
-        const stickyBtnContainer = document.getElementById('stickyBtnContainer');
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    stickyBtnContainer.classList.add('hidden');
-                } else {
-                    stickyBtnContainer.classList.remove('hidden');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        observer.observe(orderForm);
-
-        // 2. Countdown Timer (2 Hours)
-        let totalSeconds = 2 * 3600 - 1;
-        const timerElement = document.getElementById('timer');
-
-        setInterval(() => {
-            if (totalSeconds <= 0) {
-                totalSeconds = 2 * 3600; // Reset loop if reached 0
-            }
-            totalSeconds--;
-            const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, '0');
-            const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
-            const seconds = String(totalSeconds % 60).padStart(2, '0');
-            timerElement.textContent = `${hours}:${minutes}:${seconds}`;
-        }, 1000);
-
-        // 3. Form Validation & Submission
-        function handleOrderSubmit(event) {
-            event.preventDefault();
-
-            const fullname = document.getElementById('fullname').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const honeypot = document.getElementById('address_confirm').value;
-
-            const nameError = document.getElementById('nameError');
-            const phoneError = document.getElementById('phoneError');
-
-            nameError.style.display = 'none';
-            phoneError.style.display = 'none';
-
-            // Check Honeypot (Anti-Bot)
-            if (honeypot !== "") {
-                console.warn("Bot submission blocked.");
-                return false;
-            }
-
-            // Validate Full Name
-            const cleanName = fullname.toLowerCase();
-            const isBlacklisted = blacklistedKeywords.some(keyword => cleanName.includes(keyword));
-            
-            if (fullname.length < 3 || isBlacklisted || /(.)\1{4,}/.test(fullname)) {
-                nameError.style.display = 'block';
-                return false;
-            }
-
-            // Validate Moroccan Phone Number (05, 06, or 07 + 8 digits)
-            const moroccoPhoneRegex = /^(05|06|07)[0-9]{8}$/;
-            const cleanPhone = phone.replace(/\s+/g, '');
-
-            if (!moroccoPhoneRegex.test(cleanPhone)) {
-                phoneError.style.display = 'block';
-                return false;
-            }
-
-            // Success Action
-            console.log("Order Data Verified:", { name: fullname, phone: cleanPhone });
-
-            document.getElementById('thankYouModal').style.display = 'flex';
-            document.getElementById('codForm').reset();
-        }
-
-        function closeModal() {
-            document.getElementById('thankYouModal').style.display = 'none';
-        }
-    </script>
+<script src="script.js"></script>
 
 </body>
 </html>
